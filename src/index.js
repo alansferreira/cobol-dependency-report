@@ -1,4 +1,5 @@
-const srcPath = '/home/alansferreira/dev/repo/local-tests/cobol-wrk-test';
+//const srcPath = '/home/alansferreira/dev/repo/local-tests/cobol-wrk-test';
+const srcPath = 'D:/dev/repo/local-tests/cobol-wrk-test';
 const parsers = require('cobol-parsers');
 const fs = require('fs');
 const glob = require('glob');
@@ -160,7 +161,7 @@ glob(srcPath + '/**/*.{cob,cpy}', function (er, files) {
     for (const name in depTreeRoot) {
         if (!depTreeRoot.hasOwnProperty(name)) continue;
         if(!depTreeRoot[name].dependencies || !depTreeRoot[name].dependencies.length) continue;
-        fs.writeFileSync(`./deps/root-dep-${name.replace(/\'/g, '')}.json`, JSON.stringify(depTreeRoot[name], undefined, 2));
+        // fs.writeFileSync(`./deps/root-dep-${name.replace(/\'/g, '')}.json`, JSON.stringify(depTreeRoot[name], undefined, 2));
         names.push(name);
         output.dependencies.push(depTreeRoot[name]);
     }
