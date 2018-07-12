@@ -1,0 +1,25 @@
+{
+  "name": "cobol-depencency",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alansferreira/cobol-depencency.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alansferreira/cobol-depencency/issues"
+  },
+  "homepage": "https://github.com/alansferreira/cobol-depencency#readme",
+  "dependencies": {
+    "cobol-parsers": "1.0.4",
+    "glob": "7.1.2",
+    "nedb": "1.8.0"
+  }
+}

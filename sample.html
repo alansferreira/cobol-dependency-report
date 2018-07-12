@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://rawgit.com/dabeng/OrgChart/master/demo/css/jquery.orgchart.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://rawgit.com/dabeng/OrgChart/master/demo/css/style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://rawgit.com/dabeng/OrgChart/master/demo/js/jquery.orgchart.js"></script>
+</head>
+<body>
+    
+    <div id="chart-container"></div>
+
+    <script>
+    'use strict';
+
+        (function($){
+
+        $(function() {
+
+            var datascource = {};
+
+            var oc = $('#chart-container').orgchart({
+            'pan': false, 
+            'direction': 'l2r',
+            'data' : datascource,
+            'nodeContent': 'title',
+            'createNode': function($node, data) {
+                $node.on('click', function(event) {
+                if (!$(event.target).is('.edge, .toggleBtn')) {
+                    var $this = $(this);
+                    var $chart = $this.closest('.orgchart');
+                    var newX = window.parseInt(($chart.outerWidth(true)/2) - ($this.offset().left - $chart.offset().left) - ($this.outerWidth(true)/2));
+                    var newY = window.parseInt(($chart.outerHeight(true)/2) - ($this.offset().top - $chart.offset().top) - ($this.outerHeight(true)/2));
+                    $chart.css('transform', 'matrix(1, 0, 0, 1, ' + newX + ', ' + newY + ')');
+                }
+                });
+            }
+            });
+
+        });
+
+        })(jQuery);
+    </script>
+</body>
+</html>

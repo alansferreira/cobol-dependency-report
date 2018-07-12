@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="css.css" />
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/then-request/2.2.0/request.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+  
+    <!-- Angular Material Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+</head>
+
+<body>
+
+    <div ng-app='app1'>
+        <div ng-controller='ctrl1'>
+            <div layout="row" flex>
+                <div flex>
+                    all
+                    <ul class='tree'>
+                        <dep-item md-colors="{background: '{{item.selectedColor}}'}" ng-repeat='item in root.dependencies' item='item' on-select='select'></dep-item>
+                    </ul>
+                </div>
+                <div flex>
+                    selected
+                    <ul>
+                        <li> {{selected.name}}
+                            <ul>
+                                <li ng-repeat='ref in selected.referencedBy' ng-click="select(ref)">
+                                    {{ref.name}}, at line: {{ref.startedAtLine}}
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <script>
+        angular
+            .module('app1', ['ngMaterial', 'ngMessages'])
+            .controller('ctrl1', ($scope) => {
+                $scope.selected = {};
+                $scope.names = ['adfasd'];
+                $scope.root = [];
+                $scope.selection = {
+                    currentRoot: null,
+                    currentRootRef: null
+                };
+                Promise.all([
+                    request('GET', '/deps/root-dep.json'), 
+                    request('GET', '/deps/root-ref.json'), 
+                ]).then((values) => {
+                    setTimeout(() => {
+                        $scope.$apply(() => {
+                            $scope.root = JSON.parse(values[0].body);
+                            $scope.rootRef = JSON.parse(values[1].body);
+                        });
+                    }, 500);
+                    
+                });
+
+                $scope.select = (item) => {
+                    if(!item.referencedBy && $scope.selection.currentRoot){
+                        $scope.selection.currentRoot.selectedColor = 'amber';
+                        $scope.selection.currentRoot = item;
+                        item.selectedColor = 'white';
+                    }
+                    
+                    $scope.selected = $scope.rootRef[item.name];
+                };
+            })
+            .directive('depItem', function () {
+                return {
+                    restrict: 'E',
+                    scope: {
+                        item: '=',
+                        onSelect: '='
+                    },
+                    template: 
+                              '<li id="{{item.name}}" ng-click="itemClick($event, item)">{{item.name}}: ln {{item.startedAtLine}}' + 
+                              ' <ul ng-click="itemClick($event, item)" ng-if="item.dependencies">' + 
+                              '  <dep-item ng-repeat="child in item.dependencies" item="child" on-select="onSelect" />' + 
+                              ' </ul>' + 
+                              '</li>',
+                    link: (scope, element, attrs) => {
+                        scope.itemClick = ($event, item) => {
+                            if(!scope.onSelect) return true;
+                            scope.onSelect(item);
+                            $event.cancelBubble = true;
+                            $event.preventDefault();
+                            return false;
+                        };
+                     }
+                }
+            });
+
+    </script>
+</body>
+
+</html>

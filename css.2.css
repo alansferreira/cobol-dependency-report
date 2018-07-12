@@ -1,0 +1,51 @@
+.tree-menu a {
+  text-decoration: none;
+  color: #1ab4ff;
+}
+
+.tree-menu {
+  font-size: 14px;
+  line-height: 24px;
+  overflow: hidden;
+}
+.tree-menu input[type=checkbox] {
+  display: none;
+}
+.tree-menu ul {
+  margin: 0 0 0 20px;
+  display: none;
+  position: relative;
+}
+.tree-menu ul:before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  bottom: 12px;
+  border-left: 1px #EEE solid;
+  left: -30px;
+}
+.tree-menu label {
+  cursor: pointer;
+}
+.tree-menu input[type=checkbox]:checked ~ ul {
+  display: block;
+}
+.tree-menu input[type=checkbox]:checked ~ label {
+  /*color: #CCC;*/
+}
+.tree-menu li {
+  list-style: none;
+  position: relative;
+}
+.tree-menu li:before {
+  content: "";
+  position: absolute;
+  width: 25px;
+  border-bottom: 1px #EEE solid;
+  z-index: -1;
+  left: -30px;
+  top: 12px;
+}
+.tree-menu > li {
+  margin-left: 10px;
+}

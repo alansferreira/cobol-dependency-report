@@ -1,0 +1,55 @@
+* {
+  font-family: Consolas, monospace;	
+}
+/*
+ Tree structure using CSS:
+ http://stackoverflow.com/questions/14922247/how-to-get-a-tree-in-html-using-pure-css
+*/
+
+.tree, .tree ul{
+  font: normal normal 14px/20px Helvetica, Arial, sans-serif;  
+  list-style-type: none;
+  margin-left: 0 0 0 10px;
+  padding: 0;
+  position: relative;   
+  overflow:hidden;    
+}
+
+.tree li{
+  margin: 0;
+  padding: 0 22px;  
+  position: relative;  
+  left: 10px; 
+}
+  
+.tree li::before, .tree li::after{
+  content: '';
+  position: absolute;
+  left: 0;
+}
+
+/* horizontal line on inner list items */
+.tree li::before{
+  border-top: 2px solid #B5A8FD;
+  top: 10px;
+  width: 20px;
+  height: 0;    
+}
+
+/* vertical line on list items */   
+.tree li:after{
+  border-left: 2px solid #B5A8FD;
+  height: 100%;
+  width: 0px;
+  top: -10px; 
+}
+
+/* lower line on list items from the first level because they don't have parents */
+.tree > li::after{
+  top: 10px;
+}
+
+/* hide line from the last of the first level list items */
+.tree > li:last-child::after{
+  display: none;
+}
